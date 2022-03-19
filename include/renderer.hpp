@@ -7,13 +7,13 @@ class Renderer
 {
   public:
 
-    Renderer()  = default;
-    ~Renderer() = default;
-
-    void Prepare();
-    void RenderModel(const RawModel&);
+    static void NewFrame();
+    static void RenderModel(const RawModel&);
 
   private:
+
+    Renderer()  = default;
+    ~Renderer() = default;
 };
 
 #endif  // RENDERER_HPP

@@ -10,8 +10,6 @@ int main(void)
     Window window({ "Crisp Solutions - Simulator", 1280, 720 });
     window.Init(true);
 
-    Renderer renderer;
-
     float vertices[] = { // Left bottom triangle
                          -0.5f, 0.5f, 0.0f, -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f,
                          // Right bottom triangle
@@ -23,9 +21,9 @@ int main(void)
 
     while (!window.ShouldClose())
     {
-        renderer.Prepare();
+        Renderer::NewFrame();
         shader.Bind();
-        renderer.RenderModel(model);
+        Renderer::RenderModel(model);
         shader.Unbind();
         window.Update();
     }
