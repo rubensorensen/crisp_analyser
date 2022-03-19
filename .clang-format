@@ -1,0 +1,109 @@
+Language:                               Cpp
+Standard:                               c++17
+BasedOnStyle:                           LLVM
+#
+# Alignments
+DerivePointerAlignment:                 false
+PointerAlignment:                       Left
+AlignAfterOpenBracket:                  Align
+AlignArrayOfStructures:                 Left
+AlignConsecutiveAssignments:            Consecutive
+AlignConsecutiveBitFields:              Consecutive
+AlignConsecutiveMacros:                 Consecutive
+AlignEscapedNewlines:                   Left
+AlignOperands:                          Align
+AlignTrailingComments:                  true
+#
+AllowShortBlocksOnASingleLine:          Empty
+AllowShortCaseLabelsOnASingleLine:      false
+AllowShortEnumsOnASingleLine:           true
+AllowShortFunctionsOnASingleLine:       Inline
+AllowShortIfStatementsOnASingleLine:    Never
+AllowShortLambdasOnASingleLine:         Inline
+AllowShortLoopsOnASingleLine:           false
+AlwaysBreakAfterReturnType:             None
+AlwaysBreakBeforeMultilineStrings:      false
+AlwaysBreakTemplateDeclarations:        Yes
+BinPackArguments:                       true
+BinPackParameters:                      false
+BitFieldColonSpacing:                   Both
+#
+# Breaking
+BreakBeforeBinaryOperators:             None
+BreakBeforeTernaryOperators:            false
+BreakConstructorInitializers:           BeforeColon
+BreakInheritanceList:                   AfterComma
+BreakStringLiterals:                    true
+ColumnLimit:                            100
+CompactNamespaces:                      true
+BreakBeforeBraces:                      Custom
+BraceWrapping:
+    AfterCaseLabel:                     false
+    AfterClass:                         true
+    AfterControlStatement:              Always
+    AfterEnum:                          true
+    AfterFunction:                      true
+    AfterNamespace:                     true
+    AfterStruct:                        true
+    AfterUnion:                         true
+    AfterExternBlock:                   true
+    BeforeCatch:                        true
+    BeforeElse:                         true
+    BeforeLambdaBody:                   false
+    BeforeWhile:                        false
+    SplitEmptyFunction:                 false
+    SplitEmptyRecord:                   false
+    SplitEmptyNamespace:                false
+#
+Cpp11BracedListStyle:                   false
+MaxEmptyLinesToKeep:                    1
+EmptyLineAfterAccessModifier:           Always
+EmptyLineBeforeAccessModifier:          LogicalBlock
+FixNamespaceComments:                   true
+IncludeBlocks:                          Regroup
+IncludeCategories:
+  - Regex:                              '^"(llvm|llvm-c|clang|clang-c)/'
+    Priority:                           2
+    SortPriority:                       2
+    CaseSensitive:                      true
+  - Regex:                              '^((<|")(gtest|gmock|isl|json)/)'
+    Priority:                           3
+  - Regex:                              '<[[:alnum:].]+>'
+    Priority:                           4
+  - Regex:                              '.*'
+    Priority:                           1
+    SortPriority:                       0
+#
+# Indentation
+UseTab:                                 Never
+IndentWidth:                            4
+TabWidth:                               4
+IndentAccessModifiers:                  false
+IndentCaseBlocks:                       false
+IndentCaseLabels:                       true
+IndentExternBlock:                      Indent
+IndentPPDirectives:                     AfterHash
+IndentWrappedFunctionNames:             false
+LambdaBodyIndentation:                  Signature
+NamespaceIndentation:                   All
+#
+# Spaces
+SpacesInCStyleCastParentheses:          false
+SpaceAfterCStyleCast:                   false
+SpaceAfterLogicalNot:                   false
+SpaceAfterTemplateKeyword:              false
+SpaceAroundPointerQualifiers:           Default
+SpaceBeforeAssignmentOperators:         true
+SpaceBeforeCaseColon:                   false
+SpaceBeforeCpp11BracedList:             false
+SpaceBeforeInheritanceColon:            true
+SpaceBeforeParens:                      ControlStatements
+SpaceBeforeRangeBasedForLoopColon:      true
+SpaceBeforeSquareBrackets:              false
+SpaceInEmptyBlock:                      false
+SpaceInEmptyParentheses:                false
+SpacesBeforeTrailingComments:           2
+SpacesInAngles:                         Never
+SpacesInConditionalStatement:           false
+SpacesInParentheses:                    false
+SpacesInSquareBrackets:                 false
