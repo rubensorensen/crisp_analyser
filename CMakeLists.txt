@@ -19,11 +19,19 @@ set(GLM_INCLUDE_DIRS ${GLEW_DIR})
 
 set(PROJECT_HDR
         ${PROJECT_DIR}/include/window.hpp
+        ${PROJECT_DIR}/include/raw_model.hpp
+        ${PROJECT_DIR}/include/loader.hpp
+        ${PROJECT_DIR}/include/renderer.hpp
+        ${PROJECT_DIR}/include/shader.hpp
 )
 
 set(PROJECT_SRC
         ${PROJECT_DIR}/src/main.cpp
         ${PROJECT_DIR}/src/window.cpp
+        ${PROJECT_DIR}/src/raw_model.cpp
+        ${PROJECT_DIR}/src/loader.cpp
+        ${PROJECT_DIR}/src/renderer.cpp
+        ${PROJECT_DIR}/src/shader.cpp
 )
 
 add_executable(crispr_simulator "")
