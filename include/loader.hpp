@@ -10,7 +10,7 @@ class Loader
 {
   public:
 
-    static RawModel LoadToVAO(float*, size_t);
+    static RawModel LoadToVAO(float*, size_t, uint32_t*, size_t);
     static void CleanUp();
 
   private:
@@ -20,6 +20,7 @@ class Loader
     static uint32_t CreateVAO();
     static void StoreDataInAttributeLists(uint32_t, float*, size_t);
     static void UnbindVAO();
+    static void BindIndexBuffer(uint32_t*, size_t);
 
   private:
 

@@ -5,12 +5,13 @@
 std::list<uint32_t> Loader::m_VertexArrayObjects;
 std::list<uint32_t> Loader::m_VertexBufferObjects;
 
-RawModel Loader::LoadToVAO(float* positions, size_t size)
+RawModel Loader::LoadToVAO(float* positions, size_t posSize, uint32_t* indices, size_t indSize)
 {
     uint32_t vaoID = CreateVAO();
-    StoreDataInAttributeLists(0, positions, size);
+    BindIndexBuffer(indices, indSize);
+    StoreDataInAttributeLists(0, positions, posSize);
     UnbindVAO();
-    return RawModel(vaoID, size / 3);
+    return RawModel(vaoID, indSize / 2);
 }
 
 void Loader::CleanUp()
@@ -38,11 +39,20 @@ void Loader::StoreDataInAttributeLists(uint32_t attributeNumber, float* data, si
     m_VertexBufferObjects.push_back(vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-    glVertexAttribPointer(attributeNumber, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+    glVertexAttribPointer(attributeNumber, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void Loader::UnbindVAO()
 {
     glBindVertexArray(0);
+}
+
+void Loader::BindIndexBuffer(uint32_t* indices, size_t size)
+{
+    uint32_t vbo;
+    glGenBuffers(1, &vbo);
+    m_VertexBufferObjects.push_back(vbo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
 }

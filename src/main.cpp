@@ -10,13 +10,10 @@ int main(void)
     Window window({ "Crisp Solutions - Simulator", 1280, 720 });
     window.Init(true);
 
-    float vertices[] = { // Left bottom triangle
-                         -0.5f, 0.5f, 0.0f, -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f,
-                         // Right bottom triangle
-                         0.5f, -0.5f, 0.0f, 0.5f, 0.5f, 0.0f, -0.5f, 0.5f, 0.0f
-    };
+    float vertices[]   = { -0.5f, 0.5f, -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f };
+    uint32_t indices[] = { 0, 1, 3, 3, 1, 2 };
 
-    RawModel model = Loader::LoadToVAO(vertices, sizeof(vertices));
+    RawModel model = Loader::LoadToVAO(vertices, sizeof(vertices), indices, sizeof(indices));
     Shader shader("res/basic.shader");
 
     while (!window.ShouldClose())
