@@ -1,11 +1,12 @@
 #ifndef SIMULATOR_HPP
 #define SIMULATOR_HPP
 
+#include "frame_buffer.hpp"
 #include "particle.hpp"
 #include "shader.hpp"
-#include "vector"
 
 #include <string>
+#include <vector>
 
 class Simulator
 {
@@ -14,6 +15,8 @@ class Simulator
     static void Init(uint32_t, std::string);
     static void Update();
     static void Terminate();
+
+    inline static Framebuffer& GetFramebuffer() { return *(Get().m_Framebuffer); }
 
   private:
 
@@ -26,6 +29,7 @@ class Simulator
 
     std::vector<Particle*> m_Particles;
     std::unique_ptr<Shader> m_Shader;
+    std::unique_ptr<Framebuffer> m_Framebuffer;
 };
 
 #endif  // SIMULATOR_HPP
