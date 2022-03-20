@@ -19,13 +19,9 @@ in vec3 fragPos;
 layout(location = 0) out vec4 out_color;
 
 uniform vec3 u_Color;
-uniform vec2 u_Resolution;
 
 void main()
 {
-    // vec2 uv = fragPos.xy / u_Resolution;
-    // float aspectRatio = u_Resolution.x / u_Resolution.y;
-    // uv.x *= aspectRatio;
 
     float pct = 0.0;
     pct = distance(fragPos.xyz, vec3(0.5));
@@ -34,5 +30,5 @@ void main()
     if (pct > 0.7)
         discard;
 
-    out_color = vec4(u_Color, 1.0);
+    out_color = vec4(u_Color * pct, 1.0);
 }

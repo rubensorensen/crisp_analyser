@@ -15,7 +15,7 @@ int main(void)
     while (!window.ShouldClose())
     {
         Renderer::NewFrame();
-        Simulator::Update(window.GetProperties().Width, window.GetProperties().Height);
+        Simulator::Update();
         window.Update();
     }
 

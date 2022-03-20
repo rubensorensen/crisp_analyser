@@ -17,12 +17,10 @@ void Simulator::Init(uint32_t maxParticles, std::string shaderPath)
         Get().m_Particles.push_back(new Particle({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.1f));
 }
 
-void Simulator::Update(uint32_t width, uint32_t height)
+void Simulator::Update()
 {
     Get().m_Shader->Bind();
     Get().m_Shader->SetUniform3f("u_Color", 1.0f, 0.0f, 0.0f);
-    Get().m_Shader->SetUniform2f("u_Resolution", static_cast<float>(width),
-                                 static_cast<float>(height));
 
     for (Particle* particle : Get().m_Particles)
     {

@@ -12,7 +12,7 @@ class Simulator
   public:
 
     static void Init(uint32_t, std::string);
-    static void Update(uint32_t, uint32_t);
+    static void Update();
     static void Terminate();
 
   private:
