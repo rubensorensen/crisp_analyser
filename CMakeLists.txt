@@ -28,6 +28,7 @@ set(PROJECT_HDR
         ${PROJECT_DIR}/include/shader.hpp
         ${PROJECT_DIR}/include/math.hpp
         ${PROJECT_DIR}/include/particle.hpp
+        ${PROJECT_DIR}/include/simulator.hpp
 )
 
 set(PROJECT_SRC
@@ -39,6 +40,7 @@ set(PROJECT_SRC
         ${PROJECT_DIR}/src/shader.cpp
         ${PROJECT_DIR}/src/math.cpp
         ${PROJECT_DIR}/src/particle.cpp
+        ${PROJECT_DIR}/src/simulator.cpp
 )
 
 add_executable(crispr_simulator "")
