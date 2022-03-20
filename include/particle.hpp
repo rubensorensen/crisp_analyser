@@ -18,8 +18,8 @@ class Particle
     void IncreaseScale(float);
 
     inline const RawModel& GetModel() const { return *m_Model; }
-    inline const glm::vec3& GetPosition() const { return m_Position; }
-    inline const glm::vec3& GetRotation() const { return m_Position; }
+    inline glm::vec3 GetPosition() const { return m_Position; }
+    inline glm::vec3 GetRotation() const { return m_Rotation; }
     inline const float GetScale() const { return m_Scale; }
 
   private:

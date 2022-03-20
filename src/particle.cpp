@@ -2,6 +2,7 @@
 
 #include "loader.hpp"
 
+#include <iostream>
 #include <stdint.h>
 
 Particle::Particle(const glm::vec3& pos, const glm::vec3& rot, float scale)

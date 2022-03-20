@@ -24,7 +24,7 @@ int main(void)
 
     for (int i = 0; i < 100; ++i)
         particles.push_back(new Particle({ (float)dist(gen), (float)dist(gen), (float)dist(gen) },
-                                         { 1.0f, 0.0f, 0.0f }, ((float)dist(gen) + 1.0) / 10.0f));
+                                         { 0.0f, 0.0f, 0.0f }, ((float)dist(gen) + 1.0) / 10.0f));
 
     Shader shader("res/basic.shader");
 
@@ -35,8 +35,6 @@ int main(void)
 
         for (Particle* p : particles)
         {
-            p->IncreasePosition({ (float)dist(gen) / 1000.0f, (float)dist(gen) / 1000.0f,
-                                  (float)dist(gen) / 1000.0f });
             Renderer::RenderParticle(*p, &shader);
         }
         shader.Unbind();
