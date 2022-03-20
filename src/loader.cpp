@@ -11,7 +11,7 @@ RawModel Loader::LoadToVAO(float* positions, size_t posSize, uint32_t* indices, 
     BindIndexBuffer(indices, indSize);
     StoreDataInAttributeLists(0, positions, posSize);
     UnbindVAO();
-    return RawModel(vaoID, indSize / 2);
+    return RawModel(vaoID, indSize / 3);
 }
 
 void Loader::CleanUp()
@@ -39,7 +39,7 @@ void Loader::StoreDataInAttributeLists(uint32_t attributeNumber, float* data, si
     m_VertexBufferObjects.push_back(vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-    glVertexAttribPointer(attributeNumber, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+    glVertexAttribPointer(attributeNumber, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

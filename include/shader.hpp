@@ -2,6 +2,7 @@
 #ifndef SHADER_HPP
 #define SHADER_HPP
 
+#include "glm/mat4x4.hpp"
 #include <unordered_map>
 
 #include <stdint.h>
@@ -24,6 +25,7 @@ class Shader
     void Unbind() const;
 
     void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+    void SetUniformMatrix4x4(const std::string& name, const glm::mat4x4& matrix);
 
   private:
 

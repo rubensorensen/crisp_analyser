@@ -1,7 +1,9 @@
 #ifndef RENDERER_HPP
 #define RENDERER_HPP
 
+#include "particle.hpp"
 #include "raw_model.hpp"
+#include "shader.hpp"
 
 class Renderer
 {
@@ -9,6 +11,7 @@ class Renderer
 
     static void NewFrame();
     static void RenderModel(const RawModel&);
+    static void RenderParticle(const Particle&, Shader*);
 
   private:
 

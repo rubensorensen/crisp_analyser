@@ -1,6 +1,7 @@
 #include "shader.hpp"
 
 #include "GL/glew.h"
+#include <glm/gtc/type_ptr.hpp>
 
 #include <fstream>
 #include <iostream>
@@ -30,6 +31,11 @@ void Shader::Unbind() const
 void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
 {
     glUniform4f(GetUniformLocation(name), v0, v1, v2, v3);
+}
+
+void Shader::SetUniformMatrix4x4(const std::string& name, const glm::mat4x4& matrix)
+{
+    glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
 int Shader::GetUniformLocation(const std::string& name)
