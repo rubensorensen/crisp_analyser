@@ -5,6 +5,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS=ON)
 set(PROJECT_DIR ${CMAKE_CURRENT_LIST_DIR})
 
+set(glew-cmake_BUILD_STATIC OFF)
+set(GLFW_LIBRARY_TYPE "SHARED")
+
 add_subdirectory(${PROJECT_DIR}/extern/glfw)
 add_subdirectory(${PROJECT_DIR}/extern/glew)
 add_subdirectory(${PROJECT_DIR}/extern/glm)
@@ -61,6 +64,6 @@ target_include_directories(crispr_simulator
 target_link_libraries(crispr_simulator
         PUBLIC
         glfw
-        libglew_static
+        libglew_shared
         glm
 )
