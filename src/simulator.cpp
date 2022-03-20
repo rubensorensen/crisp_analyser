@@ -14,7 +14,8 @@ void Simulator::Init(uint32_t maxParticles, std::string shaderPath)
 {
     Get().m_Shader = std::make_unique<Shader>(shaderPath);
     for (int i = 0; i < maxParticles; ++i)
-        Get().m_Particles.push_back(new Particle({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.1f));
+        Get().m_Particles.push_back(
+            new Particle({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.025f));
 
     Framebuffer::Properties fbProps;
     fbProps.Width       = 1280;
@@ -25,8 +26,9 @@ void Simulator::Init(uint32_t maxParticles, std::string shaderPath)
 void Simulator::Update()
 {
     Get().m_Framebuffer->Bind();
+    Renderer::NewFrame();
     Get().m_Shader->Bind();
-    Get().m_Shader->SetUniform3f("u_Color", 1.0f, 0.0f, 0.0f);
+    Get().m_Shader->SetUniform3f("u_Color", 0.96f, 0.13f, 0.15f);
 
     for (Particle* particle : Get().m_Particles)
     {

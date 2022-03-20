@@ -1,5 +1,8 @@
 #include "window.hpp"
 
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 #include <iostream>
 
 void error_callback(int error, const char* description)
@@ -46,6 +49,7 @@ void Window::Update()
     glViewport(0, 0, m_Properties.Width, m_Properties.Height);
 
     glfwPollEvents();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     glfwSwapBuffers(m_Window);
 }
 
@@ -53,4 +57,10 @@ void Window::Terminate()
 {
     glfwDestroyWindow(m_Window);
     glfwTerminate();
+}
+
+void Window::InitGui()
+{
+    ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
 }

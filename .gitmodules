@@ -10,3 +10,7 @@
 [submodule "extern/PerlinNoise"]
 	path = extern/PerlinNoise
 	url = https://github.com/Reputeless/PerlinNoise
+[submodule "extern/imgui"]
+	path = extern/imgui
+	url = https://github.com/ocornut/imgui.git
+	branch = docking

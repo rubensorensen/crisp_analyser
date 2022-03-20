@@ -16,11 +16,26 @@ set(GLFW_DIR ${PROJECT_DIR}/extern/glfw)
 set(GLEW_DIR ${PROJECT_DIR}/extern/glew)
 set(GLEW_DIR ${PROJECT_DIR}/extern/glm)
 set(PERLIN_DIR ${PROJECT_DIR}/extern/PerlinNoise)
+set(IMGUI_DIR ${PROJECT_DIR}/extern/imgui)
 
 set(GLFW_INCLUDE_DIRS ${GLFW_DIR}/include)
 set(GLEW_INCLUDE_DIRS ${GLEW_DIR}/include)
 set(GLM_INCLUDE_DIRS ${GLEW_DIR})
 set(PERLIN_INCLUDE_DIRS ${PERLIN_DIR})
+set(IMGUI_INCLUDE_DIRS 
+        ${IMGUI_DIR}
+        ${IMGUI_DIR}/backends
+)
+
+set(IMGUI_SRC
+        ${PROJECT_DIR}/extern/imgui/imgui.cpp
+        ${PROJECT_DIR}/extern/imgui/imgui_demo.cpp
+        ${PROJECT_DIR}/extern/imgui/imgui_draw.cpp
+        ${PROJECT_DIR}/extern/imgui/backends/imgui_impl_opengl3.cpp
+        ${PROJECT_DIR}/extern/imgui/backends/imgui_impl_glfw.cpp
+        ${PROJECT_DIR}/extern/imgui/imgui_tables.cpp
+        ${PROJECT_DIR}/extern/imgui/imgui_widgets.cpp
+)
 
 set(PROJECT_HDR
         ${PROJECT_DIR}/include/window.hpp
@@ -32,6 +47,7 @@ set(PROJECT_HDR
         ${PROJECT_DIR}/include/particle.hpp
         ${PROJECT_DIR}/include/simulator.hpp
         ${PROJECT_DIR}/include/frame_buffer.hpp
+        ${PROJECT_DIR}/include/gui.hpp
 )
 
 set(PROJECT_SRC
@@ -45,6 +61,8 @@ set(PROJECT_SRC
         ${PROJECT_DIR}/src/particle.cpp
         ${PROJECT_DIR}/src/simulator.cpp
         ${PROJECT_DIR}/src/frame_buffer.cpp
+        ${PROJECT_DIR}/src/gui.cpp
+        ${IMGUI_SRC}
 )
 
 add_executable(crispr_simulator "")
@@ -62,6 +80,7 @@ target_include_directories(crispr_simulator
         ${GLFW_INCLUDE_DIRS}
         ${GLEW_INCLUDE_DIRS}
         ${PERLIN_INCLUDE_DIRS}
+        ${IMGUI_INCLUDE_DIRS}
 )
 
 target_link_libraries(crispr_simulator
@@ -69,4 +88,5 @@ target_link_libraries(crispr_simulator
         glfw
         libglew_shared
         glm
+        ${CMAKE_DL_LIBS}
 )

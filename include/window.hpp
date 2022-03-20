@@ -24,6 +24,8 @@ class Window
     void Update();
     void Terminate();
 
+    void InitGui();
+
     inline bool ShouldClose() { return glfwWindowShouldClose(m_Window); }
     inline const Properties& GetProperties() const { return m_Properties; }
 
