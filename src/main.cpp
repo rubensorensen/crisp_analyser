@@ -10,7 +10,7 @@ int main(void)
     Window window({ "Crisp Solutions - Simulator", 1280, 720 });
     window.Init(true);
 
-    Simulator::Init(1, "res/basic.shader");
+    Simulator::Init(100, "res/basic.shader");
 
     while (!window.ShouldClose())
     {

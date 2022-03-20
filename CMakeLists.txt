@@ -15,10 +15,12 @@ add_subdirectory(${PROJECT_DIR}/extern/glm)
 set(GLFW_DIR ${PROJECT_DIR}/extern/glfw)
 set(GLEW_DIR ${PROJECT_DIR}/extern/glew)
 set(GLEW_DIR ${PROJECT_DIR}/extern/glm)
+set(PERLIN_DIR ${PROJECT_DIR}/extern/PerlinNoise)
 
 set(GLFW_INCLUDE_DIRS ${GLFW_DIR}/include)
 set(GLEW_INCLUDE_DIRS ${GLEW_DIR}/include)
 set(GLM_INCLUDE_DIRS ${GLEW_DIR})
+set(PERLIN_INCLUDE_DIRS ${PERLIN_DIR})
 
 set(PROJECT_HDR
         ${PROJECT_DIR}/include/window.hpp
@@ -55,12 +57,9 @@ target_sources(crispr_simulator
 target_include_directories(crispr_simulator
         PUBLIC
         ${PROJECT_DIR}/include
-        ${OPENCV_INCLUDE_DIRS}
-        ${PROJECT_DIR}/build
         ${GLFW_INCLUDE_DIRS}
         ${GLEW_INCLUDE_DIRS}
-        ${IMGUI_DIR}
-        ${IMGUI_DIR}/backends
+        ${PERLIN_INCLUDE_DIRS}
 )
 
 target_link_libraries(crispr_simulator

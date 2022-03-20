@@ -1,6 +1,7 @@
 #ifndef PARTICLE_HPP
 #define PARTICLE_HPP
 
+#include "PerlinNoise.hpp"
 #include "glm/vec3.hpp"
 #include "raw_model.hpp"
 
@@ -13,6 +14,7 @@ class Particle
     Particle(const glm::vec3&, const glm::vec3&, float);
     ~Particle() = default;
 
+    void Update();
     void IncreasePosition(const glm::vec3&);
     void IncreaseRotation(const glm::vec3&);
     void IncreaseScale(float);
@@ -28,6 +30,9 @@ class Particle
     glm::vec3 m_Position;
     glm::vec3 m_Rotation;
     float m_Scale;
+    siv::PerlinNoise m_NoiseX;
+    siv::PerlinNoise m_NoiseY;
+    float m_Offset;
 };
 
 #endif  // PARTICLE_HPP
