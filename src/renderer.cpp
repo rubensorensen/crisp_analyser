@@ -32,7 +32,7 @@ void Renderer::RenderParticle(const Particle& particle, Shader* shader)
     glm::mat4x4 transform = Math::CreateTransformationMatrix(
         particle.GetPosition(), particle.GetRotation().x, particle.GetRotation().y,
         particle.GetRotation().z, particle.GetScale());
-    shader->SetUniformMatrix4x4("transformationMatrix", transform);
+    shader->SetUniformMatrix4x4("u_TransformationMatrix", transform);
 
     glDrawElements(GL_TRIANGLES, model.GetVertexCount(), GL_UNSIGNED_INT, 0);
     glDisableVertexAttribArray(0);

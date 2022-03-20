@@ -10,12 +10,12 @@ int main(void)
     Window window({ "Crisp Solutions - Simulator", 1280, 720 });
     window.Init(true);
 
-    Simulator::Init(100, "res/basic.shader");
+    Simulator::Init(100, "res/particle.shader");
 
     while (!window.ShouldClose())
     {
         Renderer::NewFrame();
-        Simulator::Update();
+        Simulator::Update(window.GetProperties().Width, window.GetProperties().Height);
         window.Update();
     }
 
