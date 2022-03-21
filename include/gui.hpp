@@ -8,7 +8,7 @@ class Gui
 {
   public:
 
-    static void Init(Window*);
+    static void Init(Window*, int32_t);
     static void Terminate();
     static void Update(Framebuffer*, Framebuffer*, int32_t*);
 
@@ -28,6 +28,10 @@ class Gui
     static void ShowSimulation(Framebuffer*);
     static void ShowAnalysis(Framebuffer*);
     static void ShowLog();
+
+  private:
+
+    int32_t m_MaxParticleCount;
 };
 
 #endif  // GUI_HPP
