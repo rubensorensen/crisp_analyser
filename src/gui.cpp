@@ -11,8 +11,9 @@ Gui& Gui::Get()
     return instance;
 }
 
-void Gui::Init(Window* window)
+void Gui::Init(Window* window, int32_t maxParticleCount)
 {
+    Get().m_MaxParticleCount = maxParticleCount;
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
@@ -117,7 +118,7 @@ void Gui::ShowSimulationProps(int32_t* particleCount)
     static float particleSpread = 0.5f;
     ImGui::Begin("Simulation Properties");
     ImGui::Text("Particle Data");
-    ImGui::SliderInt("Count", particleCount, 0, 1000);
+    ImGui::SliderInt("Count", particleCount, 0, Get().m_MaxParticleCount);
     ImGui::SliderFloat("Spread", &particleSpread, 0.0f, 1.0f);
     ImGui::End();
 }
