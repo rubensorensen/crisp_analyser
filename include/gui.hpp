@@ -10,7 +10,7 @@ class Gui
 
     static void Init(Window*);
     static void Terminate();
-    static void Update(Framebuffer*, Framebuffer*);
+    static void Update(Framebuffer*, Framebuffer*, int32_t*);
 
   private:
 
@@ -23,7 +23,7 @@ class Gui
     static void NewFrame();
     static void LoadStyle();
 
-    static void ShowSimulationProps();
+    static void ShowSimulationProps(int32_t*);
     static void ShowSimulationStats();
     static void ShowSimulation(Framebuffer*);
     static void ShowAnalysis(Framebuffer*);

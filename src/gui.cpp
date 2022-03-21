@@ -34,7 +34,7 @@ void Gui::Terminate()
     ImGui::DestroyContext();
 }
 
-void Gui::Update(Framebuffer* simulationBuffer, Framebuffer* analysisBuffer)
+void Gui::Update(Framebuffer* simulationBuffer, Framebuffer* analysisBuffer, int32_t* particleCount)
 {
     NewFrame();
 
@@ -57,7 +57,7 @@ void Gui::Update(Framebuffer* simulationBuffer, Framebuffer* analysisBuffer)
     ImGuiID dockSpaceId = ImGui::GetID("Dockspace");
     ImGui::DockSpace(dockSpaceId, { 0.0f, 0.0f });
 
-    ShowSimulationProps();
+    ShowSimulationProps(particleCount);
     ShowSimulationStats();
     ShowSimulation(simulationBuffer);
     ShowAnalysis(analysisBuffer);
@@ -112,13 +112,12 @@ void Gui::LoadStyle()
     style.Colors[ImGuiCol_SeparatorActive]    = ImVec4(0.40f, 0.40f, 0.40f, 1.00f);
 }
 
-void Gui::ShowSimulationProps()
+void Gui::ShowSimulationProps(int32_t* particleCount)
 {
-    static int particleCount    = 0;
     static float particleSpread = 0.5f;
     ImGui::Begin("Simulation Properties");
     ImGui::Text("Particle Data");
-    ImGui::SliderInt("Count", &particleCount, 0, 100);
+    ImGui::SliderInt("Count", particleCount, 0, 1000);
     ImGui::SliderFloat("Spread", &particleSpread, 0.0f, 1.0f);
     ImGui::End();
 }

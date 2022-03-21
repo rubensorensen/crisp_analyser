@@ -13,7 +13,7 @@ class Simulator
   public:
 
     static void Init(uint32_t, std::string);
-    static void Update();
+    static void Update(int* particleCount);
     static void Terminate();
 
     inline static Framebuffer& GetFramebuffer() { return *(Get().m_Framebuffer); }
@@ -30,6 +30,7 @@ class Simulator
     std::vector<Particle*> m_Particles;
     std::unique_ptr<Shader> m_Shader;
     std::unique_ptr<Framebuffer> m_Framebuffer;
+    int32_t m_MaxParticles;
 };
 
 #endif  // SIMULATOR_HPP
