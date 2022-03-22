@@ -10,18 +10,20 @@ int main(void)
 {
     Window window({ "Crisp Solutions - Simulator", 1280, 720 });
     window.Init(true);
-    const int32_t maxParticles = 1500;
-    int32_t particleCount      = 500;
+    Simulator::Properties simulatorProps;
+    simulatorProps.MaxParticles  = 1500;
+    simulatorProps.ParticleCount = 500;
 
-    Simulator::Init(maxParticles, "res/particle.shader");
+    Simulator::Init(simulatorProps, "res/particle.shader");
 
-    Gui::Init(&window, maxParticles);
+    Gui::Init(&window, simulatorProps.MaxParticles);
 
     while (!window.ShouldClose())
     {
         Renderer::NewFrame();
-        Simulator::Update(&particleCount);
-        Gui::Update(&Simulator::GetFramebuffer(), &Simulator::GetFramebuffer(), &particleCount);
+        Simulator::Update();
+        Gui::Update(&Simulator::GetFramebuffer(), &Simulator::GetFramebuffer(),
+                    &Simulator::GetProperties()->ParticleCount);
         window.Update();
     }
 

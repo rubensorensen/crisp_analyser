@@ -2,15 +2,16 @@
 #define GUI_HPP
 
 #include "frame_buffer.hpp"
+#include "imgui.h"
 #include "window.hpp"
 
 class Gui
 {
   public:
 
-    static void Init(Window*, int32_t);
+    static void Init(Window*, uint32_t);
     static void Terminate();
-    static void Update(Framebuffer*, Framebuffer*, int32_t*);
+    static void Update(Framebuffer*, Framebuffer*, uint32_t*);
 
   private:
 
@@ -23,7 +24,7 @@ class Gui
     static void NewFrame();
     static void LoadStyle();
 
-    static void ShowSimulationProps(int32_t*);
+    static void ShowSimulationProps(uint32_t*);
     static void ShowSimulationStats();
     static void ShowSimulation(Framebuffer*);
     static void ShowAnalysis(Framebuffer*);
@@ -31,7 +32,7 @@ class Gui
 
   private:
 
-    int32_t m_MaxParticleCount;
+    uint32_t m_MaxParticleCount;
 };
 
 #endif  // GUI_HPP

@@ -11,7 +11,7 @@ Gui& Gui::Get()
     return instance;
 }
 
-void Gui::Init(Window* window, int32_t maxParticleCount)
+void Gui::Init(Window* window, uint32_t maxParticleCount)
 {
     Get().m_MaxParticleCount = maxParticleCount;
     IMGUI_CHECKVERSION();
@@ -35,7 +35,9 @@ void Gui::Terminate()
     ImGui::DestroyContext();
 }
 
-void Gui::Update(Framebuffer* simulationBuffer, Framebuffer* analysisBuffer, int32_t* particleCount)
+void Gui::Update(Framebuffer* simulationBuffer,
+                 Framebuffer* analysisBuffer,
+                 uint32_t* particleCount)
 {
     NewFrame();
 
@@ -113,12 +115,13 @@ void Gui::LoadStyle()
     style.Colors[ImGuiCol_SeparatorActive]    = ImVec4(0.40f, 0.40f, 0.40f, 1.00f);
 }
 
-void Gui::ShowSimulationProps(int32_t* particleCount)
+void Gui::ShowSimulationProps(uint32_t* particleCount)
 {
     static float particleSpread = 0.5f;
     ImGui::Begin("Simulation Properties");
     ImGui::Text("Particle Data");
-    ImGui::SliderInt("Count", particleCount, 0, Get().m_MaxParticleCount);
+    ImGui::SliderInt("Count", reinterpret_cast<int32_t*>(particleCount), 0,
+                     Get().m_MaxParticleCount);
     ImGui::SliderFloat("Spread", &particleSpread, 0.0f, 1.0f);
     ImGui::End();
 }
@@ -136,8 +139,16 @@ void Gui::ShowSimulation(Framebuffer* framebuffer)
     ImGui::Begin("Simulation Viewport");
     ImGui::BeginChild("Simulation");
 
-    ImGui::Image(reinterpret_cast<void*>(framebuffer->GetColorAttachment()), ImGui::GetWindowSize(),
-                 ImVec2(0, 1), ImVec2(1, 0));
+    ImVec2 maxSize = ImGui::GetWindowSize();
+    ImVec2 size(std::min(maxSize.x, maxSize.y), std::min(maxSize.x, maxSize.y));
+    ImVec2 cursorPos = ImGui::GetCursorPos();
+    ImVec2 offset((maxSize.x - size.x) / 2.0f, (maxSize.y - size.y) / 2.0f);
+
+    ImGui::SetCursorPosX(cursorPos.x + offset.x);
+    ImGui::SetCursorPosY(cursorPos.y + offset.y);
+
+    ImGui::Image(reinterpret_cast<void*>(framebuffer->GetColorAttachment()), size, ImVec2(0, 1),
+                 ImVec2(1, 0));
 
     ImGui::EndChild();
     ImGui::End();
@@ -148,8 +159,16 @@ void Gui::ShowAnalysis(Framebuffer* framebuffer)
     ImGui::Begin("Analysis Viewport");
     ImGui::BeginChild("Analysis");
 
-    ImGui::Image(reinterpret_cast<void*>(framebuffer->GetColorAttachment()), ImGui::GetWindowSize(),
-                 ImVec2(0, 1), ImVec2(1, 0));
+    ImVec2 maxSize = ImGui::GetWindowSize();
+    ImVec2 size(std::min(maxSize.x, maxSize.y), std::min(maxSize.x, maxSize.y));
+    ImVec2 cursorPos = ImGui::GetCursorPos();
+    ImVec2 offset((maxSize.x - size.x) / 2.0f, (maxSize.y - size.y) / 2.0f);
+
+    ImGui::SetCursorPosX(cursorPos.x + offset.x);
+    ImGui::SetCursorPosY(cursorPos.y + offset.y);
+
+    ImGui::Image(reinterpret_cast<void*>(framebuffer->GetColorAttachment()), size, ImVec2(0, 1),
+                 ImVec2(1, 0));
 
     ImGui::EndChild();
     ImGui::End();

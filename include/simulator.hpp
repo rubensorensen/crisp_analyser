@@ -12,11 +12,18 @@ class Simulator
 {
   public:
 
-    static void Init(uint32_t, std::string);
-    static void Update(int* particleCount);
+    struct Properties
+    {
+        uint32_t MaxParticles;
+        uint32_t ParticleCount;
+    };
+
+    static void Init(Properties, std::string);
+    static void Update();
     static void Terminate();
 
     inline static Framebuffer& GetFramebuffer() { return *(Get().m_Framebuffer); }
+    inline static Properties* GetProperties() { return &Get().m_Properties; }
 
   private:
 
@@ -30,7 +37,7 @@ class Simulator
     std::vector<Particle*> m_Particles;
     std::unique_ptr<Shader> m_Shader;
     std::unique_ptr<Framebuffer> m_Framebuffer;
-    int32_t m_MaxParticles;
+    Properties m_Properties;
 };
 
 #endif  // SIMULATOR_HPP
