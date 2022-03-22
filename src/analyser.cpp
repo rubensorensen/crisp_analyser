@@ -23,28 +23,22 @@ void Analyser::Update()
 
     cv::cvtColor(origImg, img, cv::COLOR_BGR2HSV);
     cv::inRange(img, cv::Scalar(0, 100, 100), cv::Scalar(179, 255, 255), img);
-    // cv::GaussianBlur(img, img, cv::Size(9, 9), 2, 2);
+    cv::GaussianBlur(img, img, cv::Size(7, 7), 2, 2);
 
     std::vector<std::vector<cv::Point>> contours;
     cv::findContours(img, contours, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE);
 
     std::vector<std::vector<cv::Point>> contoursPoly(contours.size());
     std::vector<cv::Rect> boundRect(contours.size());
-    std::vector<cv::Point2f> center(contours.size());
-    std::vector<float> radius(contours.size());
 
     for (size_t i = 0; i < contours.size(); i++)
     {
         cv::approxPolyDP(contours[i], contoursPoly[i], 3, true);
         boundRect[i] = cv::boundingRect(contoursPoly[i]);
-        cv::minEnclosingCircle(contoursPoly[i], center[i], radius[i]);
     }
 
     for (size_t i = 0; i < boundRect.size(); ++i)
-    {
         cv::rectangle(origImg, boundRect[i], cv::Scalar(205, 229, 218), 2);
-        // cv::circle(origImg, center[i], static_cast<int>(radius[i]), cv::Scalar(0, 255, 255), 2);
-    }
 
     GetGLTexFromCVMat(origImg);
 }
