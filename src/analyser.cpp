@@ -4,6 +4,7 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 
+#include <iostream>
 Analyser& Analyser::Get()
 {
     static Analyser instance;
@@ -17,9 +18,35 @@ void Analyser::Init(Framebuffer* simBuffer)
 
 void Analyser::Update()
 {
-    GetCVMatFromGLTex();
+    cv::Mat origImg = GetCVMatFromGLTex();
+    cv::Mat img;
 
-    GetGLTexFromCVMat();
+    cv::cvtColor(origImg, img, cv::COLOR_BGR2HSV);
+    cv::inRange(img, cv::Scalar(0, 100, 100), cv::Scalar(179, 255, 255), img);
+    // cv::GaussianBlur(img, img, cv::Size(9, 9), 2, 2);
+
+    std::vector<std::vector<cv::Point>> contours;
+    cv::findContours(img, contours, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE);
+
+    std::vector<std::vector<cv::Point>> contoursPoly(contours.size());
+    std::vector<cv::Rect> boundRect(contours.size());
+    std::vector<cv::Point2f> center(contours.size());
+    std::vector<float> radius(contours.size());
+
+    for (size_t i = 0; i < contours.size(); i++)
+    {
+        cv::approxPolyDP(contours[i], contoursPoly[i], 3, true);
+        boundRect[i] = cv::boundingRect(contoursPoly[i]);
+        cv::minEnclosingCircle(contoursPoly[i], center[i], radius[i]);
+    }
+
+    for (size_t i = 0; i < boundRect.size(); ++i)
+    {
+        cv::rectangle(origImg, boundRect[i], cv::Scalar(205, 229, 218), 2);
+        // cv::circle(origImg, center[i], static_cast<int>(radius[i]), cv::Scalar(0, 255, 255), 2);
+    }
+
+    GetGLTexFromCVMat(origImg);
 }
 
 void Analyser::Terminate()
@@ -27,7 +54,7 @@ void Analyser::Terminate()
     glDeleteTextures(1, &Get().m_TextureID);
 }
 
-void Analyser::GetCVMatFromGLTex()
+cv::Mat Analyser::GetCVMatFromGLTex()
 {
     glBindTexture(GL_TEXTURE_2D, Get().m_SimBuffer->GetColorAttachment());
     GLenum gl_texture_width, gl_texture_height;
@@ -39,25 +66,25 @@ void Analyser::GetCVMatFromGLTex()
         (unsigned char*)malloc(sizeof(unsigned char) * gl_texture_width * gl_texture_height * 3);
     glGetTexImage(GL_TEXTURE_2D, 0 /* mipmap level */, GL_BGR, GL_UNSIGNED_BYTE, gl_texture_bytes);
 
-    Get().m_Mat = cv::Mat(gl_texture_height, gl_texture_width, CV_8UC3, gl_texture_bytes);
+    return cv::Mat(gl_texture_height, gl_texture_width, CV_8UC3, gl_texture_bytes);
 }
 
-void Analyser::GetGLTexFromCVMat()
+void Analyser::GetGLTexFromCVMat(cv::Mat& img)
 {
     glBindTexture(GL_TEXTURE_2D, Get().m_TextureID);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    cv::cvtColor(Get().m_Mat, Get().m_Mat, cv::COLOR_RGB2BGR);
+    cv::cvtColor(img, img, cv::COLOR_RGB2BGR);
 
-    glTexImage2D(GL_TEXTURE_2D,       // Type of texture
-                 0,                   // Pyramid level (for mip-mapping) - 0 is the top level
-                 GL_RGB,              // Internal colour format to convert to
-                 Get().m_Mat.cols,    // Image width  i.e. 640 for Kinect in standard mode
-                 Get().m_Mat.rows,    // Image height i.e. 480 for Kinect in standard mode
-                 0,                   // Border width in pixels (can either be 1 or 0)
-                 GL_RGB,              // Input image format (i.e. GL_RGB, GL_RGBA, GL_BGR etc.)
-                 GL_UNSIGNED_BYTE,    // Image data type
-                 Get().m_Mat.ptr());  // The actual image data itself
+    glTexImage2D(GL_TEXTURE_2D,     // Type of texture
+                 0,                 // Pyramid level (for mip-mapping) - 0 is the top level
+                 GL_RGB,            // Internal colour format to convert to
+                 img.cols,          // Image width  i.e. 640 for Kinect in standard mode
+                 img.rows,          // Image height i.e. 480 for Kinect in standard mode
+                 0,                 // Border width in pixels (can either be 1 or 0)
+                 GL_RGB,            // Input image format (i.e. GL_RGB, GL_RGBA, GL_BGR etc.)
+                 GL_UNSIGNED_BYTE,  // Image data type
+                 img.ptr());        // The actual image data itself
 }

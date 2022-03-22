@@ -21,13 +21,12 @@ class Analyser
     Analyser(const Analyser&) = delete;
     static Analyser& Get();
 
-    static void GetCVMatFromGLTex();
-    static void GetGLTexFromCVMat();
+    static cv::Mat GetCVMatFromGLTex();
+    static void GetGLTexFromCVMat(cv::Mat&);
 
   private:
 
     Framebuffer* m_SimBuffer;
-    cv::Mat m_Mat;
     uint32_t m_TextureID;
 };
 
