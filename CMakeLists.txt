@@ -8,7 +8,7 @@ set(PROJECT_DIR ${CMAKE_CURRENT_LIST_DIR})
 set(glew-cmake_BUILD_STATIC OFF)
 set(GLFW_LIBRARY_TYPE "SHARED")
 
-SET(BUILD_LIST "core,imgcodecs,highgui,imgproc" CACHE STRING "" FORCE)
+SET(BUILD_LIST "core,imgproc" CACHE STRING "" FORCE)
 set(BUILD_SHARED_LIBS ON)
 
 add_subdirectory(${PROJECT_DIR}/extern/glfw)
@@ -101,8 +101,6 @@ target_include_directories(crispr_simulator
 
 set(OPENCV_LIBS
         opencv_core
-        opencv_imgcodecs
-        opencv_highgui
         opencv_imgproc
 )
 
