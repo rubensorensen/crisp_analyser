@@ -1,3 +1,4 @@
+#include "analyser.hpp"
 #include "gui.hpp"
 #include "loader.hpp"
 #include "renderer.hpp"
@@ -15,6 +16,7 @@ int main(void)
     simulatorProps.ParticleCount = 500;
 
     Simulator::Init(simulatorProps, "res/particle.shader");
+    Analyser::Init(&Simulator::GetFramebuffer());
 
     Gui::Init(&window, simulatorProps.MaxParticles);
 
@@ -22,12 +24,14 @@ int main(void)
     {
         Renderer::NewFrame();
         Simulator::Update();
-        Gui::Update(&Simulator::GetFramebuffer(), &Simulator::GetFramebuffer(),
+        Analyser::Update();
+        Gui::Update(&Simulator::GetFramebuffer(), Analyser::GetTexture(),
                     &Simulator::GetProperties()->ParticleCount);
         window.Update();
     }
 
     Simulator::Terminate();
+    Analyser::Terminate();
     Loader::CleanUp();
     Gui::Terminate();
     window.Terminate();

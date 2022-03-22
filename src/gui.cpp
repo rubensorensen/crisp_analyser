@@ -35,9 +35,7 @@ void Gui::Terminate()
     ImGui::DestroyContext();
 }
 
-void Gui::Update(Framebuffer* simulationBuffer,
-                 Framebuffer* analysisBuffer,
-                 uint32_t* particleCount)
+void Gui::Update(Framebuffer* simulationBuffer, uint32_t analysisTexture, uint32_t* particleCount)
 {
     NewFrame();
 
@@ -63,7 +61,7 @@ void Gui::Update(Framebuffer* simulationBuffer,
     ShowSimulationProps(particleCount);
     ShowSimulationStats();
     ShowSimulation(simulationBuffer);
-    ShowAnalysis(analysisBuffer);
+    ShowAnalysis(analysisTexture);
     ShowLog();
 
     ImGui::End();
@@ -154,7 +152,7 @@ void Gui::ShowSimulation(Framebuffer* framebuffer)
     ImGui::End();
 }
 
-void Gui::ShowAnalysis(Framebuffer* framebuffer)
+void Gui::ShowAnalysis(uint32_t analysisTexture)
 {
     ImGui::Begin("Analysis Viewport");
     ImGui::BeginChild("Analysis");
@@ -167,8 +165,7 @@ void Gui::ShowAnalysis(Framebuffer* framebuffer)
     ImGui::SetCursorPosX(cursorPos.x + offset.x);
     ImGui::SetCursorPosY(cursorPos.y + offset.y);
 
-    ImGui::Image(reinterpret_cast<void*>(framebuffer->GetColorAttachment()), size, ImVec2(0, 1),
-                 ImVec2(1, 0));
+    ImGui::Image(reinterpret_cast<void*>(analysisTexture), size, ImVec2(0, 1), ImVec2(1, 0));
 
     ImGui::EndChild();
     ImGui::End();

@@ -18,6 +18,8 @@ class Framebuffer
     inline const Properties& GetProperties() const { return m_Properties; }
     inline uint32_t GetColorAttachment() const { return m_ColorAttachmentID; }
 
+    inline void SetColorAttachment(uint32_t id) { m_ColorAttachmentID = id; }
+
     void Resize();
     void Bind();
     void Unbind();

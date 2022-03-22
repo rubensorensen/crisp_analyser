@@ -8,15 +8,20 @@ set(PROJECT_DIR ${CMAKE_CURRENT_LIST_DIR})
 set(glew-cmake_BUILD_STATIC OFF)
 set(GLFW_LIBRARY_TYPE "SHARED")
 
+SET(BUILD_LIST "core,imgcodecs,highgui,imgproc" CACHE STRING "" FORCE)
+set(BUILD_SHARED_LIBS ON)
+
 add_subdirectory(${PROJECT_DIR}/extern/glfw)
 add_subdirectory(${PROJECT_DIR}/extern/glew)
 add_subdirectory(${PROJECT_DIR}/extern/glm)
+add_subdirectory(${PROJECT_DIR}/extern/opencv)
 
 set(GLFW_DIR ${PROJECT_DIR}/extern/glfw)
 set(GLEW_DIR ${PROJECT_DIR}/extern/glew)
 set(GLEW_DIR ${PROJECT_DIR}/extern/glm)
 set(PERLIN_DIR ${PROJECT_DIR}/extern/PerlinNoise)
 set(IMGUI_DIR ${PROJECT_DIR}/extern/imgui)
+set(OPENCV_DIR ${PROJECT_DIR}/extern/opencv)
 
 set(GLFW_INCLUDE_DIRS ${GLFW_DIR}/include)
 set(GLEW_INCLUDE_DIRS ${GLEW_DIR}/include)
@@ -25,6 +30,14 @@ set(PERLIN_INCLUDE_DIRS ${PERLIN_DIR})
 set(IMGUI_INCLUDE_DIRS 
         ${IMGUI_DIR}
         ${IMGUI_DIR}/backends
+)
+set(OPENCV_INCLUDE_DIRS
+        ${PROJECT_DIR}/build
+        ${OPENCV_DIR}/include
+        ${OPENCV_DIR}/modules/core/include
+        ${OPENCV_DIR}/modules/imgcodecs/include
+        ${OPENCV_DIR}/modules/highgui/include
+        ${OPENCV_DIR}/modules/imgproc/include
 )
 
 set(IMGUI_SRC
@@ -48,6 +61,7 @@ set(PROJECT_HDR
         ${PROJECT_DIR}/include/simulator.hpp
         ${PROJECT_DIR}/include/frame_buffer.hpp
         ${PROJECT_DIR}/include/gui.hpp
+        ${PROJECT_DIR}/include/analyser.hpp
 )
 
 set(PROJECT_SRC
@@ -62,6 +76,7 @@ set(PROJECT_SRC
         ${PROJECT_DIR}/src/simulator.cpp
         ${PROJECT_DIR}/src/frame_buffer.cpp
         ${PROJECT_DIR}/src/gui.cpp
+        ${PROJECT_DIR}/src/analyser.cpp
         ${IMGUI_SRC}
 )
 
@@ -81,6 +96,14 @@ target_include_directories(crispr_simulator
         ${GLEW_INCLUDE_DIRS}
         ${PERLIN_INCLUDE_DIRS}
         ${IMGUI_INCLUDE_DIRS}
+        ${OPENCV_INCLUDE_DIRS}
+)
+
+set(OPENCV_LIBS
+        opencv_core
+        opencv_imgcodecs
+        opencv_highgui
+        opencv_imgproc
 )
 
 target_link_libraries(crispr_simulator
@@ -88,5 +111,6 @@ target_link_libraries(crispr_simulator
         glfw
         libglew_shared
         glm
+        ${OPENCV_LIBS}
         ${CMAKE_DL_LIBS}
 )
