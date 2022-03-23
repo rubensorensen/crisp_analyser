@@ -16,10 +16,11 @@ class Simulator
     {
         uint32_t MaxParticles;
         uint32_t ParticleCount;
+        float ParticleSize;
     };
 
     static void Init(Properties, std::string);
-    static void Update(double);
+    static void Update(double, float);
     static void Terminate();
 
     inline static Framebuffer& GetFramebuffer() { return *(Get().m_Framebuffer); }

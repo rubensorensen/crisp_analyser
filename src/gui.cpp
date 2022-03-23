@@ -35,7 +35,10 @@ void Gui::Terminate()
     ImGui::DestroyContext();
 }
 
-void Gui::Update(Framebuffer* simulationBuffer, uint32_t analysisTexture, uint32_t* particleCount)
+void Gui::Update(Framebuffer* simulationBuffer,
+                 uint32_t analysisTexture,
+                 Simulator::Properties* simProps,
+                 Analyser::Properties* analysisProps)
 {
     NewFrame();
 
@@ -58,11 +61,12 @@ void Gui::Update(Framebuffer* simulationBuffer, uint32_t analysisTexture, uint32
     ImGuiID dockSpaceId = ImGui::GetID("Dockspace");
     ImGui::DockSpace(dockSpaceId, { 0.0f, 0.0f });
 
-    ShowSimulationProps(particleCount);
+    ShowSimulationProps(&simProps->ParticleCount, &simProps->ParticleSize);
+    ShowAnalysisProps(analysisProps);
     ShowSimulationStats();
     ShowSimulation(simulationBuffer);
     ShowAnalysis(analysisTexture);
-    ShowLog();
+    ShowAnalysisOutput(analysisProps, analysisTexture);
 
     ImGui::End();
 
@@ -113,14 +117,24 @@ void Gui::LoadStyle()
     style.Colors[ImGuiCol_SeparatorActive]    = ImVec4(0.40f, 0.40f, 0.40f, 1.00f);
 }
 
-void Gui::ShowSimulationProps(uint32_t* particleCount)
+void Gui::ShowSimulationProps(uint32_t* particleCount, float* particleSize)
 {
-    static float particleSpread = 0.5f;
     ImGui::Begin("Simulation Properties");
     ImGui::Text("Particle Data");
     ImGui::SliderInt("Count", reinterpret_cast<int32_t*>(particleCount), 0,
                      Get().m_MaxParticleCount);
-    ImGui::SliderFloat("Spread", &particleSpread, 0.0f, 1.0f);
+    ImGui::SliderFloat("Particle Size", particleSize, 0.0f, 0.2f);
+    ImGui::End();
+}
+
+void Gui::ShowAnalysisProps(Analyser::Properties* props)
+{
+    ImGui::Begin("Analysis Properties");
+    ImGui::Checkbox("Analysis", &props->ShowBoundingBoxes);
+    ImGui::Text("Bounding boxes");
+    ImGui::SliderFloat("r", &props->BoundingBoxColor.Value.x, 0, 1);
+    ImGui::SliderFloat("g", &props->BoundingBoxColor.Value.y, 0, 1);
+    ImGui::SliderFloat("b", &props->BoundingBoxColor.Value.z, 0, 1);
     ImGui::End();
 }
 
@@ -144,15 +158,17 @@ void Gui::ShowSimulation(Framebuffer* framebuffer)
     ImGui::BeginChild("Simulation");
 
     ImVec2 maxSize = ImGui::GetWindowSize();
-    ImVec2 size(std::min(maxSize.x, maxSize.y), std::min(maxSize.x, maxSize.y));
+    Get().m_AnalysisWindowSize =
+        ImVec2(std::min(maxSize.x, maxSize.y), std::min(maxSize.x, maxSize.y));
     ImVec2 cursorPos = ImGui::GetCursorPos();
-    ImVec2 offset((maxSize.x - size.x) / 2.0f, (maxSize.y - size.y) / 2.0f);
+    ImVec2 offset((maxSize.x - Get().m_AnalysisWindowSize.x) / 2.0f,
+                  (maxSize.y - Get().m_AnalysisWindowSize.y) / 2.0f);
 
     ImGui::SetCursorPosX(cursorPos.x + offset.x);
     ImGui::SetCursorPosY(cursorPos.y + offset.y);
 
-    ImGui::Image(reinterpret_cast<void*>(framebuffer->GetColorAttachment()), size, ImVec2(0, 1),
-                 ImVec2(1, 0));
+    ImGui::Image(reinterpret_cast<void*>(framebuffer->GetColorAttachment()),
+                 Get().m_AnalysisWindowSize, ImVec2(0, 1), ImVec2(1, 0));
 
     ImGui::EndChild();
     ImGui::End();
@@ -177,8 +193,13 @@ void Gui::ShowAnalysis(uint32_t analysisTexture)
     ImGui::End();
 }
 
-void Gui::ShowLog()
+void Gui::ShowAnalysisOutput(Analyser::Properties* props, uint32_t texture)
 {
-    ImGui::Begin("Log");
+    ImGui::Begin("Analysis Output");
+    ImGui::Text("Area of bounding boxes: %d", props->AreaOfBoxes);
+    ImGui::Text("Area of sample image: %d", props->AreaOfAnalysisWindow);
+    ImGui::Text("Est. amount of particles (percent): %f",
+                static_cast<float>(props->AreaOfBoxes) /
+                    static_cast<float>(props->AreaOfAnalysisWindow));
     ImGui::End();
 }

@@ -15,9 +15,13 @@ int main(void)
     Simulator::Properties simulatorProps;
     simulatorProps.MaxParticles  = 1500;
     simulatorProps.ParticleCount = 500;
-
+    simulatorProps.ParticleSize  = 0.025f;
     Simulator::Init(simulatorProps, "res/particle.shader");
-    Analyser::Init(&Simulator::GetFramebuffer());
+
+    Analyser::Properties analyserProps;
+    analyserProps.ShowBoundingBoxes = true;
+    analyserProps.BoundingBoxColor  = ImColor(1.0f, 1.0f, 1.0f);
+    Analyser::Init(&Simulator::GetFramebuffer(), analyserProps);
 
     Gui::Init(&window, simulatorProps.MaxParticles);
 
@@ -30,10 +34,10 @@ int main(void)
         double dt = timer.Milliseconds();
         timer.Start();
         Renderer::NewFrame();
-        Simulator::Update(dt);
+        Simulator::Update(dt, Simulator::GetProperties()->ParticleSize);
         Analyser::Update();
         Gui::Update(&Simulator::GetFramebuffer(), Analyser::GetTexture(),
-                    &Simulator::GetProperties()->ParticleCount);
+                    Simulator::GetProperties(), Analyser::GetProperties());
         window.Update();
     }
 

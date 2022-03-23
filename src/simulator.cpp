@@ -14,9 +14,10 @@ void Simulator::Init(Simulator::Properties props, std::string shaderPath)
 {
     Get().m_Properties = props;
     Get().m_Shader     = std::make_unique<Shader>(shaderPath);
+    Get().m_Particles.reserve(Get().m_Properties.MaxParticles);
     for (int i = 0; i < Get().m_Properties.MaxParticles; ++i)
-        Get().m_Particles.push_back(
-            new Particle({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.025f));
+        Get().m_Particles.push_back(new Particle({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f },
+                                                 Get().m_Properties.ParticleSize));
 
     Framebuffer::Properties fbProps;
     fbProps.Width       = 1280;
@@ -24,7 +25,7 @@ void Simulator::Init(Simulator::Properties props, std::string shaderPath)
     Get().m_Framebuffer = std::make_unique<Framebuffer>(fbProps);
 }
 
-void Simulator::Update(double dt)
+void Simulator::Update(double dt, float particleScale)
 {
     Get().m_Framebuffer->Bind();
     Renderer::NewFrame();
@@ -34,7 +35,7 @@ void Simulator::Update(double dt)
     std::vector<Particle*>& particles = Get().m_Particles;
     for (int i = 0; i < Get().m_Properties.ParticleCount; ++i)
     {
-        particles[i]->Update(dt);
+        particles[i]->Update(dt, particleScale);
         Renderer::RenderParticle(*(particles[i]), &(*Get().m_Shader));
     }
     Get().m_Shader->Unbind();

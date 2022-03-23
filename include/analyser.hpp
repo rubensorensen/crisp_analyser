@@ -2,17 +2,27 @@
 #define ANALYSER_HPP
 
 #include "frame_buffer.hpp"
+#include "imgui.h"
 #include <opencv2/core.hpp>
 
 class Analyser
 {
   public:
 
-    static void Init(Framebuffer*);
+    struct Properties
+    {
+        bool ShowBoundingBoxes;
+        ImColor BoundingBoxColor;
+        int AreaOfBoxes;
+        int AreaOfAnalysisWindow;
+    };
+
+    static void Init(Framebuffer*, Properties);
     static void Update();
     static void Terminate();
 
     inline static uint32_t GetTexture() { return Get().m_TextureID; }
+    inline static Properties* GetProperties() { return &Get().m_Properties; }
 
   private:
 
@@ -26,6 +36,7 @@ class Analyser
 
   private:
 
+    Properties m_Properties;
     Framebuffer* m_SimBuffer;
     uint32_t m_TextureID;
 };
