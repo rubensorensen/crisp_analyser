@@ -14,7 +14,7 @@ class Particle
     Particle(const glm::vec3&, const glm::vec3&, float);
     ~Particle() = default;
 
-    void Update();
+    void Update(double);
     void IncreasePosition(const glm::vec3&);
     void IncreaseRotation(const glm::vec3&);
     void IncreaseScale(float);

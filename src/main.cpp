@@ -3,6 +3,7 @@
 #include "loader.hpp"
 #include "renderer.hpp"
 #include "simulator.hpp"
+#include "timer.hpp"
 #include "window.hpp"
 
 #include <iostream>
@@ -20,10 +21,16 @@ int main(void)
 
     Gui::Init(&window, simulatorProps.MaxParticles);
 
+    Timer timer;
+    timer.Start();
+
     while (!window.ShouldClose())
     {
+        timer.Stop();
+        double dt = timer.Milliseconds();
+        timer.Start();
         Renderer::NewFrame();
-        Simulator::Update();
+        Simulator::Update(dt);
         Analyser::Update();
         Gui::Update(&Simulator::GetFramebuffer(), Analyser::GetTexture(),
                     &Simulator::GetProperties()->ParticleCount);

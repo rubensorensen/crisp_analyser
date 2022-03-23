@@ -129,6 +129,12 @@ void Gui::ShowSimulationStats()
     ImGui::Begin("Simulation Statistics");
     ImGui::Text("Average ms/frame: %.3f ", 1000.0f / ImGui::GetIO().Framerate);
     ImGui::Text("Average FPS: %.1f", ImGui::GetIO().Framerate);
+    ImGui::Separator();
+    ImGui::Text("OpenGL Renderer:");
+    ImGui::Text("%s", glGetString(GL_RENDERER));
+    ImGui::Separator();
+    ImGui::Text("OpenGL Version:");
+    ImGui::Text("%s", glGetString(GL_VERSION));
     ImGui::End();
 }
 

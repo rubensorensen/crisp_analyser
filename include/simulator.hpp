@@ -19,7 +19,7 @@ class Simulator
     };
 
     static void Init(Properties, std::string);
-    static void Update();
+    static void Update(double);
     static void Terminate();
 
     inline static Framebuffer& GetFramebuffer() { return *(Get().m_Framebuffer); }

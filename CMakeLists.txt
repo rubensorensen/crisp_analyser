@@ -62,6 +62,7 @@ set(PROJECT_HDR
         ${PROJECT_DIR}/include/frame_buffer.hpp
         ${PROJECT_DIR}/include/gui.hpp
         ${PROJECT_DIR}/include/analyser.hpp
+        ${PROJECT_DIR}/include/timer.hpp
 )
 
 set(PROJECT_SRC

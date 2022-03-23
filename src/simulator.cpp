@@ -24,7 +24,7 @@ void Simulator::Init(Simulator::Properties props, std::string shaderPath)
     Get().m_Framebuffer = std::make_unique<Framebuffer>(fbProps);
 }
 
-void Simulator::Update()
+void Simulator::Update(double dt)
 {
     Get().m_Framebuffer->Bind();
     Renderer::NewFrame();
@@ -34,7 +34,7 @@ void Simulator::Update()
     std::vector<Particle*>& particles = Get().m_Particles;
     for (int i = 0; i < Get().m_Properties.ParticleCount; ++i)
     {
-        particles[i]->Update();
+        particles[i]->Update(dt);
         Renderer::RenderParticle(*(particles[i]), &(*Get().m_Shader));
     }
     Get().m_Shader->Unbind();

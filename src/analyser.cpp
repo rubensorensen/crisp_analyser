@@ -23,7 +23,7 @@ void Analyser::Update()
 
     cv::cvtColor(origImg, img, cv::COLOR_BGR2HSV);
     cv::inRange(img, cv::Scalar(0, 100, 100), cv::Scalar(179, 255, 255), img);
-    cv::GaussianBlur(img, img, cv::Size(7, 7), 2, 2);
+    cv::GaussianBlur(img, img, cv::Size(11, 11), 6, 6);
 
     std::vector<std::vector<cv::Point>> contours;
     cv::findContours(img, contours, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE);

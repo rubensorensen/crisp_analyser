@@ -27,7 +27,7 @@ Window::Window(const Properties& props)
 void Window::Init(bool vsync)
 {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     m_Window = glfwCreateWindow(m_Properties.Width, m_Properties.Height, m_Properties.Title.c_str(),
                                 NULL, NULL);
     if (!m_Window)
