@@ -21,10 +21,10 @@ $ cd build
 $ cmake ..
 $ make -j4
 ```
-### Windows
+#### Windows
 Generate Visual Studio Solution using CMake (3.20+).  
 Build solution using Visual Studio. Make sure to copy glfw3.dll and libglew-shared.dll to executable directory.
-### MacOS
+#### MacOS
 Project has not been tested on MacOS, but build process should be similar to Linux.
 ## Attributions
 - Ubuntu font: https://fonts.google.com/specimen/Ubuntu
