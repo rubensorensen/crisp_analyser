@@ -164,7 +164,7 @@ void Gui::ShowAnalysisProps(Analyser::Properties* props)
     ImGui::Separator();
     ImGui::Text("Line Properties");
     ImGui::SliderInt("Thickness", &props->LineThickness, 1, 5);
-    ImGui::SliderFloat3("Color", props->LineColor, 0.0f, 1.0f, "%.3f", 0.0f);
+    ImGui::SliderFloat3("Color", props->LineColor, 0.0f, 1.0f, "%.3f", 1.0f);
 
     ImGui::Separator();
     ImGui::Text("Contour Tightness");
