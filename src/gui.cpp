@@ -18,6 +18,7 @@ void Gui::Init(Window* window, uint32_t maxParticleCount)
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     (void)io;
+    io.IniFilename = "res/gui_layout.ini";
 
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;      // Enable Docking
