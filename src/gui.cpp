@@ -61,7 +61,8 @@ void Gui::Update(Framebuffer* simulationBuffer,
     ImGuiID dockSpaceId = ImGui::GetID("Dockspace");
     ImGui::DockSpace(dockSpaceId, { 0.0f, 0.0f });
 
-    ShowSimulationProps(&simProps->ParticleCount, &simProps->ParticleSize);
+    ShowSimulationProps(&simProps->ParticleCount, &simProps->ParticleSize,
+                        &simProps->ParticleSpeed);
     ShowAnalysisProps(analysisProps);
     ShowSimulationStats();
     ShowSimulation(simulationBuffer);
@@ -117,24 +118,50 @@ void Gui::LoadStyle()
     style.Colors[ImGuiCol_SeparatorActive]    = ImVec4(0.40f, 0.40f, 0.40f, 1.00f);
 }
 
-void Gui::ShowSimulationProps(uint32_t* particleCount, float* particleSize)
+void Gui::ShowSimulationProps(uint32_t* particleCount, float* particleSize, float* particleSpeed)
 {
     ImGui::Begin("Simulation Properties");
     ImGui::Text("Particle Data");
     ImGui::SliderInt("Count", reinterpret_cast<int32_t*>(particleCount), 0,
                      Get().m_MaxParticleCount);
     ImGui::SliderFloat("Particle Size", particleSize, 0.0f, 0.2f);
+    ImGui::SliderFloat("Particle Speed", particleSpeed, 0.0f, 10.0f);
     ImGui::End();
 }
 
 void Gui::ShowAnalysisProps(Analyser::Properties* props)
 {
     ImGui::Begin("Analysis Properties");
-    ImGui::Checkbox("Analysis", &props->ShowBoundingBoxes);
-    ImGui::Text("Bounding boxes");
-    ImGui::SliderFloat("r", &props->BoundingBoxColor.Value.x, 0, 1);
-    ImGui::SliderFloat("g", &props->BoundingBoxColor.Value.y, 0, 1);
-    ImGui::SliderFloat("b", &props->BoundingBoxColor.Value.z, 0, 1);
+    switch (props->Process)
+    {
+        case 0:
+            ImGui::Text("None");
+            break;
+        case 1:
+            ImGui::Text("Threshold 1");
+            break;
+        case 2:
+            ImGui::Text("Gaussian Blur");
+            break;
+        case 3:
+            ImGui::Text("Threshold 2");
+            break;
+        case 4:
+            ImGui::Text("Contours");
+            break;
+        case 5:
+            ImGui::Text("Minimal Bounding Boxes");
+            break;
+        default:
+            ImGui::Text("Undefined process");
+    }
+    ImGui::SliderInt("Process steps", &props->Process, 0, 5);
+
+    ImGui::Separator();
+    ImGui::Text("Line Properties");
+    ImGui::SliderInt("Thickness", &props->LineThickness, 1, 5);
+    ImGui::SliderFloat3("Color", props->LineColor, 0.0f, 1.0f, "%.3f", 0.0f);
+
     ImGui::End();
 }
 
@@ -198,8 +225,9 @@ void Gui::ShowAnalysisOutput(Analyser::Properties* props, uint32_t texture)
     ImGui::Begin("Analysis Output");
     ImGui::Text("Area of bounding boxes: %d", props->AreaOfBoxes);
     ImGui::Text("Area of sample image: %d", props->AreaOfAnalysisWindow);
-    ImGui::Text("Est. amount of particles (percent): %f",
+    ImGui::Text("Est. particles area relative to image: %.3f%s",
                 static_cast<float>(props->AreaOfBoxes) /
-                    static_cast<float>(props->AreaOfAnalysisWindow));
+                    static_cast<float>(props->AreaOfAnalysisWindow) * 100.0f,
+                "%");
     ImGui::End();
 }

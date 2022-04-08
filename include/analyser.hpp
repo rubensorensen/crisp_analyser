@@ -11,8 +11,9 @@ class Analyser
 
     struct Properties
     {
-        bool ShowBoundingBoxes;
-        ImColor BoundingBoxColor;
+        int Process        = 0;
+        float LineColor[3] = { 1.0f, 1.0f, 0.0f };
+        int LineThickness  = 2;
         int AreaOfBoxes;
         int AreaOfAnalysisWindow;
     };
@@ -33,6 +34,12 @@ class Analyser
 
     static cv::Mat GetCVMatFromGLTex();
     static void GetGLTexFromCVMat(cv::Mat&);
+
+    void StepOne(cv::Mat&, cv::Mat&);
+    void StepTwo(cv::Mat&, cv::Mat&);
+    void StepThree(cv::Mat&, cv::Mat&);
+    void StepFour(std::vector<std::vector<cv::Point>>&, cv::Mat&);
+    void StepFive(std::vector<cv::Rect>&, cv::Mat&);
 
   private:
 

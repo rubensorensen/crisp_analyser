@@ -17,6 +17,7 @@ class Simulator
         uint32_t MaxParticles;
         uint32_t ParticleCount;
         float ParticleSize;
+        float ParticleSpeed;
     };
 
     static void Init(Properties, std::string);

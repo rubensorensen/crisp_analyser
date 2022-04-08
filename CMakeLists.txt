@@ -3,6 +3,9 @@ project(crispr_analysis)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS=ON)
+
+set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
+
 set(PROJECT_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 set(glew-cmake_BUILD_STATIC OFF)
@@ -62,6 +65,7 @@ set(PROJECT_HDR
         ${PROJECT_DIR}/include/frame_buffer.hpp
         ${PROJECT_DIR}/include/gui.hpp
         ${PROJECT_DIR}/include/analyser.hpp
+        ${PROJECT_DIR}/include/application.hpp
         ${PROJECT_DIR}/include/timer.hpp
 )
 
@@ -78,6 +82,8 @@ set(PROJECT_SRC
         ${PROJECT_DIR}/src/frame_buffer.cpp
         ${PROJECT_DIR}/src/gui.cpp
         ${PROJECT_DIR}/src/analyser.cpp
+        ${PROJECT_DIR}/src/application.cpp
+        ${PROJECT_DIR}/src/timer.cpp
         ${IMGUI_SRC}
 )
 

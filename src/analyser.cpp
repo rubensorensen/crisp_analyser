@@ -17,42 +17,74 @@ void Analyser::Init(Framebuffer* simBuffer, Properties props)
     Get().m_Properties = props;
 }
 
+void Analyser::StepOne(cv::Mat& imgIn, cv::Mat& imgOut)
+{
+    cv::inRange(imgIn, cv::Scalar(0, 100, 100), cv::Scalar(179, 255, 255), imgOut);
+}
+
+void Analyser::StepTwo(cv::Mat& imgIn, cv::Mat& imgOut)
+{
+    cv::GaussianBlur(imgIn, imgOut, cv::Size(11, 11), 6, 6);
+}
+
+void Analyser::StepThree(cv::Mat& imgIn, cv::Mat& imgOut)
+{
+    cv::inRange(imgIn, cv::Scalar(100, 100, 100), cv::Scalar(255, 255, 255), imgOut);
+}
+
+void Analyser::StepFour(std::vector<std::vector<cv::Point>>& contours, cv::Mat& imgOut)
+{
+    int r = static_cast<int>(Get().m_Properties.LineColor[0] * 255);
+    int g = static_cast<int>(Get().m_Properties.LineColor[1] * 255);
+    int b = static_cast<int>(Get().m_Properties.LineColor[2] * 255);
+    cv::drawContours(imgOut, contours, -1, cv::Scalar(b, g, r), Get().m_Properties.LineThickness);
+}
+
+void Analyser::StepFive(std::vector<cv::Rect>& boundRect, cv::Mat& imgOut)
+{
+    int r                          = static_cast<int>(Get().m_Properties.LineColor[0] * 255);
+    int g                          = static_cast<int>(Get().m_Properties.LineColor[1] * 255);
+    int b                          = static_cast<int>(Get().m_Properties.LineColor[2] * 255);
+    Get().m_Properties.AreaOfBoxes = 0.0f;
+    for (size_t i = 0; i < boundRect.size(); ++i)
+    {
+        cv::rectangle(imgOut, boundRect[i], cv::Scalar(b, g, r), Get().m_Properties.LineThickness);
+        Get().m_Properties.AreaOfBoxes += boundRect[i].area();
+    }
+
+    Get().m_Properties.AreaOfAnalysisWindow = imgOut.size().area();
+}
+
 void Analyser::Update()
 {
     cv::Mat origImg = GetCVMatFromGLTex();
-    if (Get().m_Properties.ShowBoundingBoxes)
+    cv::Mat images[6];
+    images[0] = origImg;
+
+    cv::cvtColor(images[0], images[1], cv::COLOR_BGR2HSV);
+
+    Get().StepOne(images[1], images[1]);
+    Get().StepTwo(images[1], images[2]);
+    Get().StepThree(images[2], images[3]);
+
+    std::vector<std::vector<cv::Point>> contours;
+    cv::findContours(images[3], contours, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE);
+
+    std::vector<std::vector<cv::Point>> contoursPoly(contours.size());
+    std::vector<cv::Rect> boundRect(contours.size());
+
+    for (size_t i = 0; i < contours.size(); i++)
     {
-        cv::Mat img;
-
-        cv::cvtColor(origImg, img, cv::COLOR_BGR2HSV);
-        cv::inRange(img, cv::Scalar(0, 100, 100), cv::Scalar(179, 255, 255), img);
-        cv::GaussianBlur(img, img, cv::Size(11, 11), 6, 6);
-
-        std::vector<std::vector<cv::Point>> contours;
-        cv::findContours(img, contours, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE);
-
-        std::vector<std::vector<cv::Point>> contoursPoly(contours.size());
-        std::vector<cv::Rect> boundRect(contours.size());
-
-        for (size_t i = 0; i < contours.size(); i++)
-        {
-            cv::approxPolyDP(contours[i], contoursPoly[i], 3, true);
-            boundRect[i] = cv::boundingRect(contoursPoly[i]);
-        }
-
-        int r = static_cast<int>(Get().m_Properties.BoundingBoxColor.Value.x * 255);
-        int g = static_cast<int>(Get().m_Properties.BoundingBoxColor.Value.y * 255);
-        int b = static_cast<int>(Get().m_Properties.BoundingBoxColor.Value.z * 255);
-        Get().m_Properties.AreaOfBoxes = 0.0f;
-        for (size_t i = 0; i < boundRect.size(); ++i)
-        {
-            cv::rectangle(origImg, boundRect[i], cv::Scalar(b, g, r), 2);
-            Get().m_Properties.AreaOfBoxes += boundRect[i].area();
-        }
+        cv::approxPolyDP(contours[i], contoursPoly[i], 3, true);
+        boundRect[i] = cv::boundingRect(contoursPoly[i]);
     }
 
-    Get().m_Properties.AreaOfAnalysisWindow = origImg.size().area();
-    GetGLTexFromCVMat(origImg);
+    images[4] = cv::Mat::zeros(origImg.size(), CV_8UC3);
+    images[5] = origImg.clone();
+    Get().StepFour(contours, images[4]);
+    Get().StepFive(boundRect, images[5]);
+
+    GetGLTexFromCVMat(images[Get().m_Properties.Process]);
 }
 
 void Analyser::Terminate()
@@ -84,13 +116,6 @@ void Analyser::GetGLTexFromCVMat(cv::Mat& img)
 
     cv::cvtColor(img, img, cv::COLOR_RGB2BGR);
 
-    glTexImage2D(GL_TEXTURE_2D,     // Type of texture
-                 0,                 // Pyramid level (for mip-mapping) - 0 is the top level
-                 GL_RGB,            // Internal colour format to convert to
-                 img.cols,          // Image width  i.e. 640 for Kinect in standard mode
-                 img.rows,          // Image height i.e. 480 for Kinect in standard mode
-                 0,                 // Border width in pixels (can either be 1 or 0)
-                 GL_RGB,            // Input image format (i.e. GL_RGB, GL_RGBA, GL_BGR etc.)
-                 GL_UNSIGNED_BYTE,  // Image data type
-                 img.ptr());        // The actual image data itself
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img.cols, img.rows, 0, GL_RGB, GL_UNSIGNED_BYTE,
+                 img.ptr());
 }

@@ -26,7 +26,7 @@ class Gui
     static void NewFrame();
     static void LoadStyle();
 
-    static void ShowSimulationProps(uint32_t*, float*);
+    static void ShowSimulationProps(uint32_t*, float*, float*);
     static void ShowAnalysisProps(Analyser::Properties*);
     static void ShowSimulationStats();
     static void ShowSimulation(Framebuffer*);

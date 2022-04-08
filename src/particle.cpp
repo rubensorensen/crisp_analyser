@@ -22,11 +22,11 @@ Particle::Particle(const glm::vec3& pos, const glm::vec3& rot, float scale)
         Loader::LoadToVAO(vertices, sizeof(vertices), indices, sizeof(indices)));
 }
 
-void Particle::Update(double dt, float scale)
+void Particle::Update(double dt, float scale, float speed)
 {
     m_Position.x = m_NoiseX.noise1D(m_Offset) * 3;
     m_Position.y = m_NoiseY.noise1D(m_Offset) * 3;
-    m_Offset += 0.00001 * dt;
+    m_Offset += speed * dt * 0.00005f;
     m_Scale = scale;
 }
 

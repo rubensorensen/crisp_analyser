@@ -35,7 +35,7 @@ void Simulator::Update(double dt, float particleScale)
     std::vector<Particle*>& particles = Get().m_Particles;
     for (int i = 0; i < Get().m_Properties.ParticleCount; ++i)
     {
-        particles[i]->Update(dt, particleScale);
+        particles[i]->Update(dt, particleScale, Get().m_Properties.ParticleSpeed);
         Renderer::RenderParticle(*(particles[i]), &(*Get().m_Shader));
     }
     Get().m_Shader->Unbind();
