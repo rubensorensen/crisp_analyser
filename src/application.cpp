@@ -24,6 +24,12 @@ Application::Application(const char* name, uint32_t width, uint32_t height)
     Simulator::Init(simulatorProps, "res/particle.shader");
 
     Analyser::Properties analyserProps;
+    analyserProps.Process          = 0;
+    analyserProps.LineColor[0]     = 1.0f;
+    analyserProps.LineColor[1]     = 1.0f;
+    analyserProps.LineColor[2]     = 0.0f;
+    analyserProps.LineThickness    = 2;
+    analyserProps.ContourTightness = 0.5f;
     Analyser::Init(&Simulator::GetFramebuffer(), analyserProps);
 
     Gui::Init(m_Window.get(), simulatorProps.MaxParticles);

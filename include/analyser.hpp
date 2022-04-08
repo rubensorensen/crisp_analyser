@@ -11,9 +11,10 @@ class Analyser
 
     struct Properties
     {
-        int Process        = 0;
-        float LineColor[3] = { 1.0f, 1.0f, 0.0f };
-        int LineThickness  = 2;
+        int Process;
+        float LineColor[3];
+        int LineThickness;
+        float ContourTightness;
         int AreaOfBoxes;
         int AreaOfAnalysisWindow;
     };

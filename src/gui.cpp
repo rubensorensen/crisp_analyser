@@ -64,7 +64,7 @@ void Gui::Update(Framebuffer* simulationBuffer,
     ShowSimulationProps(&simProps->ParticleCount, &simProps->ParticleSize,
                         &simProps->ParticleSpeed);
     ShowAnalysisProps(analysisProps);
-    ShowSimulationStats();
+    ShowRenderingStats();
     ShowSimulation(simulationBuffer);
     ShowAnalysis(analysisTexture);
     ShowAnalysisOutput(analysisProps, analysisTexture);
@@ -150,24 +150,31 @@ void Gui::ShowAnalysisProps(Analyser::Properties* props)
             ImGui::Text("Contours");
             break;
         case 5:
-            ImGui::Text("Minimal Bounding Boxes");
+            ImGui::Text("Isolated bounding boxes");
+            break;
+        case 6:
+            ImGui::Text("Bounding boxes with original");
             break;
         default:
             ImGui::Text("Undefined process");
     }
-    ImGui::SliderInt("Process steps", &props->Process, 0, 5);
+    ImGui::SliderInt("Process steps", &props->Process, 0, 6);
 
     ImGui::Separator();
     ImGui::Text("Line Properties");
     ImGui::SliderInt("Thickness", &props->LineThickness, 1, 5);
     ImGui::SliderFloat3("Color", props->LineColor, 0.0f, 1.0f, "%.3f", 0.0f);
 
+    ImGui::Separator();
+    ImGui::Text("Contour Tightness");
+    ImGui::SliderFloat("", &props->ContourTightness, 0.0f, 1.0f);
+
     ImGui::End();
 }
 
-void Gui::ShowSimulationStats()
+void Gui::ShowRenderingStats()
 {
-    ImGui::Begin("Simulation Statistics");
+    ImGui::Begin("Rendering Statistics");
     ImGui::Text("Average ms/frame: %.3f ", 1000.0f / ImGui::GetIO().Framerate);
     ImGui::Text("Average FPS: %.1f", ImGui::GetIO().Framerate);
     ImGui::Separator();

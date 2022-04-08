@@ -24,12 +24,13 @@ void Analyser::StepOne(cv::Mat& imgIn, cv::Mat& imgOut)
 
 void Analyser::StepTwo(cv::Mat& imgIn, cv::Mat& imgOut)
 {
-    cv::GaussianBlur(imgIn, imgOut, cv::Size(11, 11), 6, 6);
+    cv::GaussianBlur(imgIn, imgOut, cv::Size(31, 31), 6, 6);
 }
 
 void Analyser::StepThree(cv::Mat& imgIn, cv::Mat& imgOut)
 {
-    cv::inRange(imgIn, cv::Scalar(100, 100, 100), cv::Scalar(255, 255, 255), imgOut);
+    int t = Get().m_Properties.ContourTightness * 99.0f + 1.0f;
+    cv::inRange(imgIn, cv::Scalar(t, t, t), cv::Scalar(255, 255, 255), imgOut);
 }
 
 void Analyser::StepFour(std::vector<std::vector<cv::Point>>& contours, cv::Mat& imgOut)
@@ -58,7 +59,7 @@ void Analyser::StepFive(std::vector<cv::Rect>& boundRect, cv::Mat& imgOut)
 void Analyser::Update()
 {
     cv::Mat origImg = GetCVMatFromGLTex();
-    cv::Mat images[6];
+    cv::Mat images[7];
     images[0] = origImg;
 
     cv::cvtColor(images[0], images[1], cv::COLOR_BGR2HSV);
@@ -80,9 +81,11 @@ void Analyser::Update()
     }
 
     images[4] = cv::Mat::zeros(origImg.size(), CV_8UC3);
-    images[5] = origImg.clone();
+    images[5] = cv::Mat::zeros(origImg.size(), CV_8UC3);
+    images[6] = origImg.clone();
     Get().StepFour(contours, images[4]);
     Get().StepFive(boundRect, images[5]);
+    Get().StepFive(boundRect, images[6]);
 
     GetGLTexFromCVMat(images[Get().m_Properties.Process]);
 }
