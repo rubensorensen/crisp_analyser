@@ -6,6 +6,7 @@ This simulator is not intended nor recommended for professional use.
 ## Quick Start
 ### Dependencies
 - CMake (3.20+)
+- OpenGL (Ver. 3.3)
 ### Cloning
 This repository utilises submodules and must therefore be cloned recursively:
 ```sh
